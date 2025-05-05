@@ -6,13 +6,15 @@ export default {
   ],
   theme: {
     extend: {
-      fontFamily:{
-        sans:['Roboto','sans-serif']
+      fontFamily: {
+        sans: ['Roboto', 'sans-serif']
       },
-      gridTemplateColumns:{
+      gridTemplateColumns: {
         '70/30': '70% 28%',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // require('@tailwindcss/scrollbar') // Added for scrollbar styles
+  ],
 }

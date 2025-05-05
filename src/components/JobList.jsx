@@ -1,42 +1,48 @@
 import { useState } from "react";
-import { FaLocationDot } from "react-icons/fa6";
-import {Link} from "react-router-dom"
-
-const JobList = ({ job }) => {
+import { Link } from "react-router-dom";
+import getTimeAgo from "../utils/getTimeAgo";
+import categories from "../data/categories"; // ✅ Import your categories
+import custom from "../assets/images/custom.webp"
+const JobList = ({ job, onJobClick }) => {
   const [showFullDescription, setShowFullDescription] = useState(false);
 
-  let description = job.description;
-
-  if (!showFullDescription){
-    description = description.substring(0,95) + "..."
-  }
+  const getCategoryImage = (categoryName) => {
+    const category = categories.find((cat) => cat.name === categoryName);
+    return category ? category.image : custom;
+  };
 
   return (
-    <div className="bg-white rounded-xl shadow-md relative">
-      <div className="p-4">
-        <div className="mb-6">
-          <div className="text-gray-600 my-2">{job.type}</div>
-          <h3 className="text-xl font-bold">{job.title}</h3>
-        </div>
-        <div className="mb-3 ">{description}</div> 
- 
-        <button onClick={()=>setShowFullDescription((prevState)=>!prevState)} 
-        className="text-indigo-500 mb-5 hover:text-indigo-600">
-          {showFullDescription ? "Less" : "More"}
-        </button>
+    <div
+      onClick={() => onJobClick(job)}
+      className="flex bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition cursor-pointer"
+    >
+      {/* Left Image */}
+      <img
+        src={getCategoryImage(job.jobCategories)}
+        alt={job.jobCategories}
+        className="w-1/3 object-cover"
+      />
 
-        <h3 className="text-indigo-500 mb-2">{job.salary}/ Year</h3>
-        <div className="border border-gray-100 mb-5"></div>
-        <div className="flex flex-col lg:flex-row justify-between mb-4">
-          <div className="text-orange-700 mb-3">
-            <FaLocationDot className="inline mr-2 mb-1 text-lg" />{job.location}</div>
-          <Link
-            to={`/jobs/${job.id}`}
-            className="h-[36px] bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-center text-sm"
+      {/* Right Details */}
+      <div className="p-4 w-2/3">
+        <h3 className="text-xl font-bold text-indigo-700 mb-2">{job.title}</h3>
+        <p className="text-gray-600 text-sm">{job.location}</p>
+        <p className="text-gray-500 text-xs mt-1">{getTimeAgo(job.postedAt)}</p>
+
+        <p className="text-gray-700 mt-2 text-sm">
+          {showFullDescription ? job.description : `${job.description?.substring(0, 90)}...`}
+        </p>
+        {job.description?.length > 90 && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowFullDescription(!showFullDescription);
+            }}
+            className="text-indigo-500 text-xs mt-1"
           >
-            Read More
-          </Link>
-        </div>
+            {showFullDescription ? "Show Less" : "Read More"}
+          </button>
+        )}
       </div>
     </div>
   );

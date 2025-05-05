@@ -1,10 +1,10 @@
-import { useParams, useLoaderData,useNavigate} from "react-router-dom"
+import { useParams, useLoaderData, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const EditJobPage = ({updateJobSubmit}) => {
+const EditJobPage = ({ updateJobSubmit }) => {
   const job = useLoaderData();
-  
+
   const [title, setTitle] = useState(job.title);
   const [type, setType] = useState(job.type);
   const [location, setLocation] = useState(job.location);
@@ -16,7 +16,7 @@ const EditJobPage = ({updateJobSubmit}) => {
   const [contactPhone, setContactPhone] = useState(job.company.contactPhone);
 
   const navigate = useNavigate();
-  const {id} =useParams();
+  const { id } = useParams();
 
   const submitForm = (e) => {
     e.preventDefault();
@@ -30,17 +30,17 @@ const EditJobPage = ({updateJobSubmit}) => {
       salary,
       company: {
         name: companyName,
-        descrption: companyDescription,
+        description: companyDescription,
         contactEmail,
         contactPhone,
       },
     };
-    
+
     updateJobSubmit(updatedJob);
-    toast.success("Job listing updated successfully!")
+    toast.success("Job listing updated successfully!");
     return navigate(`/jobs/${id}`);
   };
-  
+
   return (
     <section className="bg-indigo-50">
       <div className="container m-auto max-w-2xl py-24">
@@ -65,8 +65,8 @@ const EditJobPage = ({updateJobSubmit}) => {
               >
                 <option value="Full-Time">Full-Time</option>
                 <option value="Part-Time">Part-Time</option>
-                <option value="Remote">Remote</option>
-                <option value="Internship">Internship</option>
+                <option value="One-Time">One-Time(service)</option>
+                <option value="Work_From_Home">Work_From_Home</option>
               </select>
             </div>
 
@@ -106,7 +106,7 @@ const EditJobPage = ({updateJobSubmit}) => {
 
             <div className="mb-4">
               <label
-                htmlFor="type"
+                htmlFor="salary"
                 className="block text-gray-700 font-bold mb-2"
               >
                 Salary
@@ -119,17 +119,17 @@ const EditJobPage = ({updateJobSubmit}) => {
                 value={salary}
                 onChange={(e) => setSalary(e.target.value)}
               >
-                <option value="Under $50K">Under $50K</option>
-                <option value="$50K - 60K">$50K - $60K</option>
-                <option value="$60K - 70K">$60K - $70K</option>
-                <option value="$70K - 80K">$70K - $80K</option>
-                <option value="$80K - 90K">$80K - $90K</option>
-                <option value="$90K - 100K">$90K - $100K</option>
-                <option value="$100K - 125K">$100K - $125K</option>
-                <option value="$125K - 150K">$125K - $150K</option>
-                <option value="$150K - 175K">$150K - $175K</option>
-                <option value="$175K - 200K">$175K - $200K</option>
-                <option value="Over $200K">Over $200K</option>
+                <option value="Under ₹500">Under ₹500</option>
+                <option value="₹500 - 1000">₹500 - ₹1000</option>
+                <option value="₹60 - 70">₹60 - ₹70</option>
+                <option value="₹70 - 80">₹70 - ₹80</option>
+                <option value="₹80 - 90">₹80 - ₹90</option>
+                <option value="₹90 - 100">₹90 - ₹100</option>
+                <option value="₹100 - 125">₹100 - ₹125</option>
+                <option value="₹125 - 150">₹125 - ₹150</option>
+                <option value="₹150 - 175">₹150 - ₹175</option>
+                <option value="₹175 - 200">₹175 - ₹200</option>
+                <option value="Over ₹200">Over ₹200</option>
               </select>
             </div>
 
@@ -236,7 +236,13 @@ const EditJobPage = ({updateJobSubmit}) => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default EditJobPage
+export default EditJobPage;
+
+export const jobLoader = async ({ params }) => {
+  const res = await fetch(`/api/jobs/${params.id}`);
+  if (!res.ok) throw new Error("Could not fetch job details");
+  return res.json();
+};

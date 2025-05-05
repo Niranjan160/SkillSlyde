@@ -1,25 +1,26 @@
-import emoji from "../assets/images/emoji.png"
-
 const Hero = ({
-  title ="Become a Frontend Dev", 
-  subtitle ="Find your right job that fits your skills and needs!"
+  title = "Find your right job that fits your skills and needs",
+  // subtitle ="Find your right job that fits your skills and needs!"
 }) => {
   return (
-    <section className="bg-indigo-600 py-16 mb-4">
+    <section className="bg-indigo-600 py-12 sm:py-16 mb-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
         <div className="text-center">
-          <h1 className="text-4xl font-extrabold text-white sm:text-5xl md:text-6xl">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight">
             {title}
           </h1>
-          <div className="flex items-center justify-center">
-          <p className="my-4 text-xl text-white">{subtitle}</p>
-          <img className="h-6 w-auto ml-3" src={emoji} alt="" />
+          {/* Optional subtitle */}
+          {/* <p className="my-4 text-lg sm:text-xl text-white">{subtitle}</p> */}
+          {/* <div className="flex items-center justify-center mt-4"> */}
+            {/* You can add an emoji or icon here if needed */}
+            {/* <img className="h-6 w-auto ml-3" src={emoji} alt="" /> */}
           </div>
         </div>
-      </div>
-      <div className="flex">
-            
-          </div>
+      {/* </div> */}
+      {/* Optional additional content (e.g., buttons, images) */}
+      {/* <div className="flex justify-center mt-8"> */}
+        {/* Add any call-to-action button or elements here */}
+      {/* </div> */}
     </section>
   );
 };
