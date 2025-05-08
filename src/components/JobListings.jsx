@@ -37,8 +37,6 @@ const JobListings = ({ isHome = false }) => {
       });
       const data = await res.json();
       console.log("DaTA: ", data);
-      //       const text = await res.text();
-      // console.log("Raw response text:", text);
       const sortedJobs = data.sort(
         (a, b) => new Date(b.postedAt) - new Date(a.postedAt)
       );

@@ -27,6 +27,20 @@ const NotificationPage = () => {
     fetchNotifications();
   }, [userId]);
 
+  useEffect(() => {
+    const markAsRead = async () => {
+      try {
+        await fetch(`${API_BASE_URL}/api/applications/mark-as-read/${userId}`, {
+          method: "PUT",
+        });
+      } catch (err) {
+        console.error("Error marking applications as read", err);
+      }
+    };
+  
+    markAsRead();
+  }, []);
+
   
   const handleAccept = async (applicationId, applicantId,jobId) => {
     const payload = {

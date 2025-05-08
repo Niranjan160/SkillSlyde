@@ -10,9 +10,7 @@ import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import MessagesPage from "./pages/MessagePage";
 import ChatPage from "./pages/ChatPage";
-// import SettingsPage from "./pages/SettingsPage";
 import NotificationPage from './pages/NotificationPage';
-// import AddressForm from './components/AddressForm';
 import ApplicationsPage from "./pages/ApplicationsPage";
 import { API_BASE_URL } from "./CONSTANTS";
 
@@ -73,9 +71,7 @@ const App = () => {
   return (
     <>
       <RouterProvider router={router} />
-      {/* <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <AddressForm />
-    </div> */}
+
     </>
     
   );

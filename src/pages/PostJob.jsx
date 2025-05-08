@@ -24,10 +24,10 @@ const PostJob = ({ addJob, userId }) => {
   const [userJobs, setUserJobs] = useState([]);
   const [showCategoryModal, setShowCategoryModal] = useState(false);
 
-  const [selectedJob, setSelectedJob] = useState(null); // ⭐ For opening the modal
-  const [editJobData, setEditJobData] = useState(null); // ⭐ For editing
-  const [showModal, setShowModal] = useState(false); // ⭐ Modal open/close
-  const [isEditing, setIsEditing] = useState(false); // ⭐ Track if editing or viewing
+  const [selectedJob, setSelectedJob] = useState(null); //  For opening the modal
+  const [editJobData, setEditJobData] = useState(null); //  For editing
+  const [showModal, setShowModal] = useState(false); //  Modal open/close
+  const [isEditing, setIsEditing] = useState(false); //  Track if editing or viewing
 
   // Fetch user's posted jobs on mount
   useEffect(() => {
@@ -69,7 +69,7 @@ const PostJob = ({ addJob, userId }) => {
 
   const handleJobTypeChange = (e) => {
     const value = e.target.value;
-    const isWages = value === "One-Time";
+    const isWages = value === "One-Time(service)";
     setJob({ ...job, jobType: value, isWages });
   };
 
@@ -148,7 +148,6 @@ const PostJob = ({ addJob, userId }) => {
   return (
     <div className="min-h-screen bg-gray-100 py-10">
       <div className="max-w-5xl mx-auto px-4 sm:px-4 lg:px-5">
-        {/* <div className="bg-white shadow-2xl rounded-lg p-8"> */}
           <h1 className="text-3xl font-bold text-indigo-600 mb-8 text-center">
             Post a New Job
           </h1>
@@ -166,14 +165,9 @@ const PostJob = ({ addJob, userId }) => {
                   className="min-w-[160px] cursor-pointer relative rounded-lg overflow-hidden shadow-md border border-gray-200 hover:shadow-lg transition-shadow duration-300"
                 >
                   <img
-                    // src={cat.image}
                     src={cat.image}
                     alt={cat.name}
                     className="h-32 w-full object-cover"
-                    // onError={(e) =>
-                    //   (e.target.src =
-                    //     "https://via.placeholder.com/300?text=Image+Not+Found")
-                    // }
                   />
                   <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent text-white text-center py-2 text-sm font-medium">
                     {cat.name}
@@ -466,11 +460,8 @@ const PostJob = ({ addJob, userId }) => {
                     <h3 className="text-lg md:text-xl font-bold text-indigo-700 truncate">
                       {job.title}
                     </h3>
-                    {/* <p className="text-gray-600 text-sm mt-1 line-clamp-3">{job.description}</p> */}
                   </div>
-
                   <div className="text-xs md:text-sm text-gray-500 space-y-1 mt-2 md:mt-3">
-                    {/* <p><strong>Description:</strong> {job.description}</p> */}
                     <p>
                       <strong>Location:</strong> {job.location}
                     </p>
@@ -481,7 +472,6 @@ const PostJob = ({ addJob, userId }) => {
                       <strong>{job.wages ? "Wages" : "Salary"}:</strong> ₹
                       {job.wages || job.salary}
                     </p>
-                    {/* <p><strong>Category:</strong> {job.jobCategories}</p> */}
                     <p>
                       <strong>Status:</strong> {job.status}
                     </p>

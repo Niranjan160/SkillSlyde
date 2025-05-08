@@ -131,16 +131,6 @@ const Profile = ({ userId }) => {
     }
     return age;
   };
-
-  // const calculateAverageRating = (jobs) => {
-  //   const ratedJobs = jobs.filter((job) => job.rating !== undefined && job.rating !== null);
-  //   if (ratedJobs.length === 0) return null;
-  //   const total = ratedJobs.reduce((sum, job) => sum + parseFloat(job.rating), 0);
-  //   return (total / ratedJobs.length).toFixed(1);
-  // };
-
-  // const averageRating = calculateAverageRating(jobs);
-
   if (!user)
     return (
       <div className="text-center mt-10 text-gray-600">Loading profile...</div>
