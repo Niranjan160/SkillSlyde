@@ -9,7 +9,7 @@
 - DEV Dependencies: React-Router-DOM, React-hooks, Tailwind CSS, json-server
 - Steps to run the portal:
  - Command > npm run dev ( to start frontend)
- - Backend Server Endpoint/URL: http://localhost:8080/jobs  
+ - Backend Server Endpoint/URL: https://springboot-skillslyde.onrender.com/jobs  
  - Job portal/Local: http://localhost:5173
 
 # React + Vite
