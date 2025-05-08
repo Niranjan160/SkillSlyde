@@ -9,8 +9,8 @@
 - DEV Dependencies: React-Router-DOM, React-hooks, Tailwind CSS, json-server
 - Steps to run the portal:
  - Command > npm run dev ( to start frontend)
- - Backend Server Endpoint/URL: http://localhost:8080/jobs  
- - Job portal/Local: http://localhost:5173
+ - Backend Server Endpoint/URL: http://192.168.161.190:8080/jobs  
+ - Job portal/Local: http://192.168.161.190:5173
 
 # React + Vite
 

@@ -20,7 +20,7 @@ const MessagesPage = () => {
   };
 
   useEffect(() => {
-    const socket = new SockJS("http://localhost:8080/ws");
+    const socket = new SockJS("http://192.168.161.190:8080/ws");
     const client = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
@@ -34,7 +34,7 @@ const MessagesPage = () => {
           const alreadyExists = users.some((user) => user.userId === senderId);
           if (!alreadyExists) {
             try {
-              const res = await axios.get(`http://localhost:8080/api/users/${senderId}`);
+              const res = await axios.get(`http://192.168.161.190:8080/api/users/${senderId}`);
               const fullUser = res.data;
               setUsers((prevUsers) => [...prevUsers, fullUser]);
             } catch (err) {
