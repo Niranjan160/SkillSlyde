@@ -74,7 +74,7 @@ const ApplicationsPage = () => {
             >
               <div className="flex items-center gap-4">
                 <img
-                  src={`http://192.168.161.190:8080/api/users/${app.userId}/profile-image`}
+                  src={`http://localhost:8080/api/users/${app.userId}/profile-image`}
                   alt={`${app.userName}'s profile`}
                   className="w-12 h-12 rounded-full object-cover border"
                   onError={(e) => {
