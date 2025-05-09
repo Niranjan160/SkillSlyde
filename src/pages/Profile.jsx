@@ -78,22 +78,22 @@ const Profile = ({ userId }) => {
         // console.log("Ratings: ",rating);
 
         userData.rating = rating.data;
-        // Fetch profile image after user data
-        // try {
-        //   const imgRes = await axios.get(`/api/users/${userId}/profile-image`, {
-        //     responseType: "arraybuffer",
-        //   });
+        Fetch profile image after user data
+        try {
+          const imgRes = await axios.get(`/api/users/${userId}/profile-image`, {
+            responseType: "arraybuffer",
+          });
 
-        //   const base64Image = btoa(
-        //     new Uint8Array(imgRes.data).reduce(
-        //       (data, byte) => data + String.fromCharCode(byte),
-        //       ""
-        //     )
-        //   );
-        //   userData.profileImage = `data:image/webp;base64,${base64Image}`;
-        // } catch (imgErr) {
-        //   console.warn("No profile image found or error loading it");
-        // }
+          const base64Image = btoa(
+            new Uint8Array(imgRes.data).reduce(
+              (data, byte) => data + String.fromCharCode(byte),
+              ""
+            )
+          );
+          userData.profileImage = `data:image/webp;base64,${base64Image}`;
+        } catch (imgErr) {
+          console.warn("No profile image found or error loading it");
+        }
 
         setUser(userData);
       } catch (err) {
@@ -120,7 +120,7 @@ const Profile = ({ userId }) => {
     if (userId) {
       fetchUser();
       fetchJobs();
-      fetchProfileImage();
+      // fetchProfileImage();
       console.log("user: ",user);
     }
   }, [userId]);
