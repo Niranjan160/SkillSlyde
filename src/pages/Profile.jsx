@@ -86,7 +86,7 @@ const Profile = ({ userId }) => {
 
   const blobUrl = URL.createObjectURL(imgRes.data);
   userData.profileImage = blobUrl; // use this in <img src={...}>
-  console.log("blob",blobUrl);
+  console.log(blobUrl);
 } catch (imgErr) {
   console.warn("No profile image found or error loading it");
 }
