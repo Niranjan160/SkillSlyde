@@ -117,6 +117,7 @@ const Profile = ({ userId }) => {
       fetchUser();
       fetchJobs();
       fetchProfileImage();
+      console.log("user: ",user);
     }
   }, [userId]);
 
