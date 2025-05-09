@@ -187,7 +187,7 @@ const Profile = ({ userId }) => {
             </p>
             {/* <p><strong>Experience:</strong> {user.experience || "N/A"}</p> */}
            
-             {currentuserId === userId && (
+             {currentuserId !== userId && (
       <p>
        <strong>Email:</strong> {user.address}</p>
              )}
