@@ -40,7 +40,10 @@ const Profile = ({ userId }) => {
     }
   };
 
-  const fetchProfileImage = async () => {
+ 
+  useEffect(() => {
+
+ const fetchProfileImage = async () => {
     try {
       const res = await axios.get(
         `${API_BASE_URL}/api/users/${userId}/profile-image`,
@@ -63,7 +66,8 @@ const Profile = ({ userId }) => {
     }
   };
 
-  useEffect(() => {
+
+    
     const fetchUser = async () => {
       try {
         const res = await axios.get(`${API_BASE_URL}/api/users/${userId}`);
