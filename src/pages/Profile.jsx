@@ -86,7 +86,7 @@ const Profile = ({ userId }) => {
 
   const blobUrl = URL.createObjectURL(imgRes.data);
   userData.profileImage = blobUrl; // use this in <img src={...}>
-
+  console.log("blob",blobUrl);
 } catch (imgErr) {
   console.warn("No profile image found or error loading it");
 }
@@ -117,14 +117,10 @@ const Profile = ({ userId }) => {
     if (userId) {
       fetchUser();
       fetchJobs();
-      // fetchProfileImage();
+      fetchProfileImage();
       console.log("user: ",user);
     }
-  //     return () => {
-  //   if (userData.profileImage) {
-  //     URL.revokeObjectURL(userData.profileImage);
-  //   }
-  // };
+ 
   }, [userId]);
 
   const calculateAge = (dob) => {
