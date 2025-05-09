@@ -48,7 +48,7 @@ const Profile = ({ userId }) => {
           responseType: "arraybuffer",
         }
       );
-
+      console.log("res: ",res);
       const base64Image = btoa(
         new Uint8Array(res.data).reduce(
           (data, byte) => data + String.fromCharCode(byte),
