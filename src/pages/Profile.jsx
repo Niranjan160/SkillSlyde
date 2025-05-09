@@ -147,17 +147,15 @@ const Profile = ({ userId }) => {
           className="relative cursor-pointer md:w-1/3 p-6 bg-indigo-100 flex flex-col items-center justify-center"
           onClick={() => fileInputRef.current.click()}
         >
-          {user.profileImage ? (
+         
             <img
-              src={user.profileImage}
+              src={`${API_BASE_URL}/api/users/profile-image/${userId}`}
               alt="Profile"
               className="w-32 h-32 object-cover rounded-full border-4 border-indigo-500 shadow-md"
             />
-          ) : (
-            <div className="w-32 h-32 bg-gray-300 rounded-full flex items-center justify-center text-gray-600">
-              No Image
-            </div>
-          )}
+        
+           
+         
           <input
             type="file"
             accept="image/*"
