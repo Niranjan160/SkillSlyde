@@ -246,7 +246,7 @@ const ChatPage = () => {
     <div className="max-w-2xl mx-auto p-6 bg-white shadow rounded mt-6 relative">
       {receiver && (
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Chat with {receiver.name}</h2>
+          <h2 className="text-2xl font-semibold">{receiver.name}</h2>
           {jobStatus === "accepted" && (
             <button
               onClick={toggleClock}
