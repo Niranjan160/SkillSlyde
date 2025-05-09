@@ -101,15 +101,15 @@ const PostJob = ({ addJob, userId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let salaryValue = job.salary;
+    // let salaryValue = job.salary;
   
     // Handle salary conversion
-    if (!isCustomSalary && salaryValue.includes("-")) {
-      const [min, max] = salaryValue.split("-").map(Number);
-      salaryValue = (min + max) / 2; // Calculate average for storage
-    } else if (!isCustomSalary && salaryValue.includes("+")) {
-      salaryValue = Number(salaryValue.replace("+", ""));
-    }
+    // if (!isCustomSalary && salaryValue.includes("-")) {
+    //   const [min, max] = salaryValue.split("-").map(Number);
+    //   salaryValue = (min + max) / 2; // Calculate average for storage
+    // } else if (!isCustomSalary && salaryValue.includes("+")) {
+    //   salaryValue = Number(salaryValue.replace("+", ""));
+    // }
   
     // Construct job post payload
     const payload = {
@@ -117,8 +117,7 @@ const PostJob = ({ addJob, userId }) => {
       title: job.title,
       description: job.description,
       location: job.location,
-      salary: job.isWages ? undefined : salaryValue,
-      wages: job.isWages ? salaryValue : undefined,
+      salary: job.salary,
       jobCategories: job.jobCategories,
       jobType: job.jobType,
       status: "OPEN", // Default status as open
@@ -347,7 +346,7 @@ const PostJob = ({ addJob, userId }) => {
                       ) : (
                         <input
                           name="salary"
-                          type="number"
+                          type="text"
                           className="w-full border border-gray-300 rounded-lg p-3"
                           placeholder="Enter exact amount in ₹"
                           value={job.salary}
