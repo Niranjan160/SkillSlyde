@@ -186,6 +186,11 @@ const Profile = ({ userId }) => {
               <strong>Qualification:</strong> {user.qualification || "N/A"}
             </p>
             {/* <p><strong>Experience:</strong> {user.experience || "N/A"}</p> */}
+           
+             {currentuserId === userId && (
+      <p>
+       <strong>Email:</strong> {user.address}</p>
+             )}
             {user.rating !== 0 ? (
               <p className="text-yellow-600 font-semibold mt-2">
                 ⭐ Total Rating: {user.rating} / 5
