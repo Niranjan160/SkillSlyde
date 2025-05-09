@@ -189,7 +189,7 @@ const Profile = ({ userId }) => {
            
              {currentuserId !== userId && (
       <p>
-       <strong>Email:</strong> {user.address}</p>
+       <strong>Address:</strong> {user.address}</p>
              )}
             {user.rating !== 0 ? (
               <p className="text-yellow-600 font-semibold mt-2">
