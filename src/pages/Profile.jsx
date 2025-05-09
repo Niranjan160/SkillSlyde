@@ -120,11 +120,11 @@ const Profile = ({ userId }) => {
       // fetchProfileImage();
       console.log("user: ",user);
     }
-      return () => {
-    if (userData.profileImage) {
-      URL.revokeObjectURL(userData.profileImage);
-    }
-  };
+  //     return () => {
+  //   if (userData.profileImage) {
+  //     URL.revokeObjectURL(userData.profileImage);
+  //   }
+  // };
   }, [userId]);
 
   const calculateAge = (dob) => {
