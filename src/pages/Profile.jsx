@@ -79,17 +79,17 @@ const Profile = ({ userId }) => {
 
         userData.rating = rating.data;
         // Fetch profile image after user data
-      try {
-  const imgRes = await axios.get(`/api/users/${userId}/profile-image`, {
-    responseType: "blob", // better than arraybuffer
-  });
+//       try {
+//   const imgRes = await axios.get(`/api/users/${userId}/profile-image`, {
+//     responseType: "blob", // better than arraybuffer
+//   });
 
-  const blobUrl = URL.createObjectURL(imgRes.data);
-  userData.profileImage = blobUrl; // use this in <img src={...}>
-  console.log(blobUrl);
-} catch (imgErr) {
-  console.warn("No profile image found or error loading it");
-}
+//   const blobUrl = URL.createObjectURL(imgRes.data);
+//   userData.profileImage = blobUrl; // use this in <img src={...}>
+//   console.log(blobUrl);
+// } catch (imgErr) {
+//   console.warn("No profile image found or error loading it");
+// }
 
 
         setUser(userData);
