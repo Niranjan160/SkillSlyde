@@ -89,13 +89,16 @@ const JobListings = ({ isHome = false }) => {
     };
   }, [isHome]);
 
-  const getTimeAgo = (dateStr) => {
-    try {
-      return formatDistanceToNow(new Date(dateStr), { addSuffix: true });
-    } catch {
-      return "Unknown time";
-    }
-  };
+const getTimeAgo = (dateStr) => {
+  try {
+    const utcDate = new Date(dateStr);
+    const istDate = new Date(utcDate.getTime() + 5.5 * 60 * 60 * 1000); // Add 5.5 hours
+    return formatDistanceToNow(istDate, { addSuffix: true });
+  } catch {
+    return "Unknown time";
+  }
+};
+
 
   const handleApply = async (job) => {
     const applicantId = parseInt(localStorage.getItem("userId"));
