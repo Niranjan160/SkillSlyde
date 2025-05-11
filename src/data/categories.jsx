@@ -10,6 +10,8 @@ import Driver from "../assets/images/driver.webp"
 import Carpenter from "../assets/images/carpenter.webp"
 import Painter from "../assets/images/painter.webp"
 import Custom from "../assets/images/custom.webp"
+import Photographer from "../assets/images/photographer.webp"
+import Technical from "../assets/images/technical.webp"
 
 const categories = [
   { name: "Electrician", image: Electrician },
@@ -23,6 +25,8 @@ const categories = [
   { name: "Cook", image: Cook},
   { name: "Carpenter", image: Carpenter },
   { name: "Painter", image: Painter },
+  { name: "Photographer", image: Photographer },
+  { name: "Technical", image: Technical },
   { name: "Custom Category", image: Custom }
 ];
 
