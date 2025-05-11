@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import imageCompression from "browser-image-compression";
 import { API_BASE_URL } from "../CONSTANTS";
+import DefaultProfile from "../assets/images/default-profile.jpg";
 
 const Profile = ({ userId }) => {
   const currentuserId = localStorage.getItem("userId");
@@ -40,10 +41,7 @@ const Profile = ({ userId }) => {
     }
   };
 
- 
-  useEffect(() => {
-
- const fetchProfileImage = async () => {
+  const fetchProfileImage = async () => {
     try {
       const res = await axios.get(
         `${API_BASE_URL}/api/users/${userId}/profile-image`,
@@ -65,6 +63,9 @@ const Profile = ({ userId }) => {
       console.error("Error fetching profile image:", err);
     }
   };
+
+  useEffect(() => {
+
 
 
     
@@ -149,10 +150,11 @@ const Profile = ({ userId }) => {
         >
          
             <img
-              src={`${API_BASE_URL}/api/users/profile-image/${userId}`}
-              alt="Profile"
-              className="w-32 h-32 object-cover rounded-full border-4 border-indigo-500 shadow-md"
-            />
+  src={user.profileImage ? user.profileImage : DefaultProfile}
+  alt="Profile"
+  className="w-32 h-32 object-cover rounded-full border-4 border-indigo-500 shadow-md"
+/>
+
         
            
          
