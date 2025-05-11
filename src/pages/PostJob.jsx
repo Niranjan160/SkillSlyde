@@ -47,22 +47,22 @@ const PostJob = ({ addJob, userId }) => {
     // Connect WebSocket to receive new job postings
     const socket = new SockJS(`${API_BASE_URL}/ws`);
     const client = new Client({
-      webSocketFactory: () => socket,
-      reconnectDelay: 5000,
-      onConnect: () => {
-        client.subscribe("/topic/jobs", (message) => {
-  const newJob = JSON.parse(message.body);
-  console.log("WebSocket new job:", newJob);
-
-  // Remove this check if it fails
-  if (!newJob || !newJob.userId) return; // basic safeguard
-
-  if (newJob.userId === parseInt(userId)) {
-    setUserJobs((prevJobs) => [newJob, ...prevJobs]);
-  }
-});
-      },
+  webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws`),
+  reconnectDelay: 5000,
+  heartbeatIncoming: 10000,
+  heartbeatOutgoing: 10000,
+  debug: (str) => console.log("WS Debug:", str),
+  onConnect: () => {
+    console.log("Connected to WebSocket");
+    client.subscribe("/topic/jobs", (message) => {
+      const newJob = JSON.parse(message.body);
+      if (newJob.userId === parseInt(userId)) {
+        setUserJobs((prevJobs) => [newJob, ...prevJobs]);
+      }
     });
+  },
+});
+
     client.activate();
 
     return () => client.deactivate();
@@ -124,7 +124,7 @@ const PostJob = ({ addJob, userId }) => {
     setJob({ ...job, salary: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   const payload = {
@@ -139,7 +139,7 @@ const PostJob = ({ addJob, userId }) => {
   };
 
   try {
-const res = await fetch(`${API_BASE_URL}/api/jobs/post`, {
+    const res = await fetch(`${API_BASE_URL}/api/jobs/post`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -149,12 +149,22 @@ const res = await fetch(`${API_BASE_URL}/api/jobs/post`, {
 
     const newJob = await res.json();
 
-    // ✅ Instantly add the new job to the top of the list
-    setUserJobs((prevJobs) => [newJob, ...prevJobs]);
+    // ✅ Add directly for instant feedback
+    setUserJobs((prevJobs) => {
+  const exists = prevJobs.some((j) => j.jobId === newJob.jobId);
+  return exists ? prevJobs : [newJob, ...prevJobs];
+});
+
+
+    // ✅ Fallback: fetch all jobs again (important for mobile consistency)
+    const allRes = await fetch(`${API_BASE_URL}/api/jobs/user/${userId}`);
+    const allData = await allRes.json();
+    setUserJobs(
+      allData.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt))
+    );
 
     toast.success("Job posted successfully");
 
-    // ✅ Reset form and close modal
     setJob({
       title: "",
       description: "",
