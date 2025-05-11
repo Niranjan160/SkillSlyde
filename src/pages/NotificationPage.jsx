@@ -164,7 +164,7 @@ const NotificationPage = () => {
             </button>
   
             <div className="overflow-y-auto p-4 pt-10">
-              <Profile userId={selectedUserId} />
+              <Profile userId={selectedUserId} readOnly={true} />
             </div>
           </div>
         </div>
