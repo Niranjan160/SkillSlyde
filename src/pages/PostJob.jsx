@@ -33,7 +33,10 @@ const PostJob = ({ addJob, userId }) => {
   useEffect(() => {
 
     const fetchJobs = async()=>{
+        alert(`fetched userId:${userId}`)
         if (userId) {
+        alert(`fetched userId1:${userId}`)
+          
       fetch(`${API_BASE_URL}/api/jobs/user/${userId}`)
         .then((res) => {
           if (!res.ok){
