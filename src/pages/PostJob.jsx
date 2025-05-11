@@ -34,7 +34,10 @@ const PostJob = ({ addJob, userId }) => {
     if (userId) {
       fetch(`${API_BASE_URL}/api/jobs/user/${userId}`)
         .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch jobs");
+          if (!res.ok){
+            alert("Error fetching jobs..")
+            throw new Error("Failed to fetch jobs");
+          }
           return res.json();
         })
         .then((data) => {
