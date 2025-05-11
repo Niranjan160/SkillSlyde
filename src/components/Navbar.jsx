@@ -4,24 +4,7 @@ import { FaUserCircle } from "react-icons/fa";
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const [userId, setUserId] = useState(localStorage.getItem("userId"));
-
-useEffect(() => {
-  const checkUser = () => {
-    setUserId(localStorage.getItem("userId"));
-  };
-
-  // Listen to storage changes (in case of multiple tabs)
-  window.addEventListener("storage", checkUser);
-
-  // Optional: run on route change too if needed
-  checkUser();
-
-  return () => {
-    window.removeEventListener("storage", checkUser);
-  };
-}, []);
-
+  const userId = localStorage.getItem("userId");
 
   const linkClass = ({ isActive }) =>
     isActive
@@ -79,12 +62,11 @@ useEffect(() => {
           <NavLink to="/jobs" className={linkClass}>
             Jobs
           </NavLink>
-          <N{userId && (
+          {userId && (
   <NavLink to="/add-job" className={linkClass}>
     Post Job
   </NavLink>
 )}
-
 
           {/* User Profile or Login */}
           {userId ? (
