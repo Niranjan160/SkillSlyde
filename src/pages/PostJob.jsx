@@ -40,6 +40,7 @@ const PostJob = ({ addJob, userId }) => {
             alert("Error fetching jobs..")
             throw new Error("Failed to fetch jobs");
           }
+            alert("Job fetched suceess..")
           return res.json();
         })
         .then((data) => {
