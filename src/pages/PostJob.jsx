@@ -124,15 +124,29 @@ const handleSubmit = async (e) => {
 
     if (!response.ok) throw new Error("Failed to post job");
 
-    const newJob = await response.json();
+    const createdJob = await response.json(); // Get full job with jobId, postedAt etc.
 
-    // Update the job list locally
-    setUserJobs((prevJobs) => [newJob, ...prevJobs]);
+    // ✅ Instantly show new job in UI without reloading
+    setUserJobs((prevJobs) => [createdJob, ...prevJobs]);
 
     toast.success("Job posted successfully");
 
-    // Close the modal
-    setJob({ ...job, showFormModal: false });
+    // Reset form and close modal
+    setJob({
+      title: "",
+      description: "",
+      location: "",
+      salary: "",
+      salaryRange: "",
+      isCustomSalary: false,
+      expectedHours: "",
+      jobType: "Full-Time",
+      jobCategories: "",
+      isWages: false,
+      showFormModal: false,
+      customCategory: false,
+    });
+    setIsCustomSalary(false);
   } catch (err) {
     toast.error("Failed to post job");
     console.error(err);
