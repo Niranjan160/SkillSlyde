@@ -105,7 +105,8 @@ const MessagesPage = () => {
               className="flex items-center p-4 border-b hover:bg-indigo-50 cursor-pointer"
             >
               <img
-                src={`/api/users/${user.userId}/profile-image`}
+{/*                 src={`/api/users/${user.userId}/profile-image`} */}
+              src={`${API_BASE_URL}/api/users/${user.userId}/profile-image`}
                 alt={`${user.name}'s profile`}
                 className="w-10 h-10 rounded-full object-cover border mr-4"
                 onError={(e) => {
