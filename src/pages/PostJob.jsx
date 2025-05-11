@@ -229,214 +229,201 @@ const PostJob = ({ addJob, userId }) => {
 
           {/* Form Modal */}
           {job.showFormModal && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-              <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6">
-                <form
-                  onSubmit={handleSubmit}
-                  className="flex flex-col md:flex-row gap-8"
-                >
-                  {/* Left Column */}
-                  <div className="flex-1 space-y-4">
-                    {/* Job Title */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        Job Title
-                      </label>
-                      <input
-                        name="title"
-                        type="text"
-                        className="w-full border border-gray-300 rounded-lg p-3 disabled:bg-gray-100"
-                        value={job.title}
-                        onChange={handleChange}
-                        disabled={!job.customCategory}
-                        required
-                      />
-                    </div>
+  <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-center items-center p-2 sm:p-4">
+    <div className="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto p-4 sm:p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col md:flex-row gap-6"
+      >
+        {/* Left Column */}
+        <div className="flex-1 space-y-4">
+          {/* Job Title */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Job Title
+            </label>
+            <input
+              name="title"
+              type="text"
+              className="w-full border border-gray-300 rounded-lg p-3 disabled:bg-gray-100"
+              value={job.title}
+              onChange={handleChange}
+              disabled={!job.customCategory}
+              required
+            />
+          </div>
 
-                    {/* Location */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        Location
-                      </label>
-                      <input
-                        name="location"
-                        type="text"
-                        placeholder="eg.Area,District,State"
-                        className="w-full border border-gray-300 rounded-lg p-3"
-                        value={job.location}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
+          {/* Location */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Location
+            </label>
+            <input
+              name="location"
+              type="text"
+              placeholder="eg.Area,District,State"
+              className="w-full border border-gray-300 rounded-lg p-3"
+              value={job.location}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-                    {/* Job Type */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        Job Type
-                      </label>
-                      <select
-                        name="jobType"
-                        className="w-full border border-gray-300 rounded-lg p-3"
-                        value={job.jobType}
-                        onChange={handleJobTypeChange}
-                        required
-                      >
-                        <option>Full-Time</option>
-                        <option>Part-Time</option>
-                        <option>One-Time(service)</option>
-                        <option>Work From Home</option>
-                      </select>
-                    </div>
+          {/* Job Type */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Job Type
+            </label>
+            <select
+              name="jobType"
+              className="w-full border border-gray-300 rounded-lg p-3"
+              value={job.jobType}
+              onChange={handleJobTypeChange}
+              required
+            >
+              <option>Full-Time</option>
+              <option>Part-Time</option>
+              <option>One-Time(service)</option>
+              <option>Work From Home</option>
+            </select>
+          </div>
 
-                    {/* Salary / Wages */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        {job.isWages ? "Wages (₹) (Optional)" : "Salary (₹)"}
-                      </label>
+          {/* Salary / Wages */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              {job.isWages ? "Wages (₹) (Optional)" : "Salary (₹)"}
+            </label>
 
-                      {/* Toggle Buttons */}
-                      <div className="flex mb-3 rounded-full bg-gray-200 w-fit p-1">
-                        <button
-                          type="button"
-                          className={`px-4 py-1 rounded-full text-sm font-medium transition ${
-                            !isCustomSalary
-                              ? "bg-indigo-600 text-white"
-                              : "text-gray-700 hover:bg-gray-300"
-                          }`}
-                          onClick={() => setIsCustomSalary(false)}
-                        >
-                          Choose Range
-                        </button>
-                        <button
-                          type="button"
-                          className={`px-4 py-1 rounded-full text-sm font-medium transition ${
-                            isCustomSalary
-                              ? "bg-indigo-600 text-white"
-                              : "text-gray-700 hover:bg-gray-300"
-                          }`}
-                          onClick={() => setIsCustomSalary(true)}
-                        >
-                          Enter Custom
-                        </button>
-                      </div>
-
-                      {/* Salary Field */}
-                      {!isCustomSalary ? (
-                        <select
-                          name="salary"
-                          className="w-full border border-gray-300 rounded-lg p-3"
-                          value={job.salary}
-                          onChange={handleChange}
-                          required={!job.isWages}
-                        >
-                          <option value="">Select a range</option>
-                          {[
-                            { label: "₹500 - ₹1,000", value: "500-1000" },
-                            { label: "₹5,000 - ₹10,000", value: "5000-10000" },
-                            {
-                              label: "₹10,000 - ₹15,000",
-                              value: "10000-15000",
-                            },
-                            {
-                              label: "₹15,000 - ₹20,000",
-                              value: "15000-20000",
-                            },
-                            {
-                              label: "₹25,000 - ₹30,000",
-                              value: "25000-30000",
-                            },
-                            { label: "₹30,000+", value: "30000+" },
-                          ].map((range) => (
-                            <option key={range.value} value={range.value}>
-                              {range.label}
-                            </option>
-                          ))}
-                        </select>
-                      ) : (
-                        <input
-                          name="salary"
-                          type="text"
-                          className="w-full border border-gray-300 rounded-lg p-3"
-                          placeholder="Enter exact amount in ₹"
-                          value={job.salary}
-                          onChange={handleChange}
-                          required={!job.isWages}
-                        />
-                      )}
-                    </div>
-
-                    {/* Expected Hours */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        Expected Hours{" "}
-                        <span className="text-gray-400 text-xs">
-                          (Optional)
-                        </span>
-                      </label>
-                      <input
-                        name="expectedHours"
-                        type="text"
-                        placeholder="eg.8"
-                        className="w-full border border-gray-300 rounded-lg p-3"
-                        value={job.expectedHours}
-                        onChange={handleChange}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Right Column */}
-                  <div className="flex-1 flex flex-col justify-between space-y-4">
-                    {/* Description */}
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-1">
-                        Description
-                      </label>
-                      <textarea
-                        name="description"
-                        rows={10}
-                        placeholder="Enter the details of the job.."
-                        className="w-full border border-gray-300 rounded-lg p-3"
-                        value={job.description}
-                        onChange={handleChange}
-                        required
-                      ></textarea>
-                    </div>
-
-                    {/* Buttons */}
-                    <div className="flex justify-end mt-4 space-x-3">
-                      <button
-                        type="button"
-                        className="bg-gray-500 text-white px-5 py-2 rounded-lg hover:bg-gray-600"
-                        onClick={() => {
-                          setJob({
-                            title: "",
-                            description: "",
-                            location: "",
-                            salary: "",
-                            expectedHours: "",
-                            jobType: "Full-Time",
-                            jobCategories: "",
-                            isWages: false,
-                            showFormModal: false,
-                            customCategory: false,
-                          });
-                          setIsCustomSalary(false);
-                        }}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        type="submit"
-                        className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
-                      >
-                        Post Job
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
+            <div className="flex mb-3 rounded-full bg-gray-200 w-fit p-1">
+              <button
+                type="button"
+                className={`px-4 py-1 rounded-full text-sm font-medium transition ${
+                  !isCustomSalary
+                    ? "bg-indigo-600 text-white"
+                    : "text-gray-700 hover:bg-gray-300"
+                }`}
+                onClick={() => setIsCustomSalary(false)}
+              >
+                Choose Range
+              </button>
+              <button
+                type="button"
+                className={`px-4 py-1 rounded-full text-sm font-medium transition ${
+                  isCustomSalary
+                    ? "bg-indigo-600 text-white"
+                    : "text-gray-700 hover:bg-gray-300"
+                }`}
+                onClick={() => setIsCustomSalary(true)}
+              >
+                Enter Custom
+              </button>
             </div>
-          )}
+
+            {!isCustomSalary ? (
+              <select
+                name="salary"
+                className="w-full border border-gray-300 rounded-lg p-3"
+                value={job.salary}
+                onChange={handleChange}
+                required={!job.isWages}
+              >
+                <option value="">Select a range</option>
+                {[
+                  { label: "₹500 - ₹1,000", value: "500-1000" },
+                  { label: "₹5,000 - ₹10,000", value: "5000-10000" },
+                  { label: "₹10,000 - ₹15,000", value: "10000-15000" },
+                  { label: "₹15,000 - ₹20,000", value: "15000-20000" },
+                  { label: "₹25,000 - ₹30,000", value: "25000-30000" },
+                  { label: "₹30,000+", value: "30000+" },
+                ].map((range) => (
+                  <option key={range.value} value={range.value}>
+                    {range.label}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input
+                name="salary"
+                type="text"
+                className="w-full border border-gray-300 rounded-lg p-3"
+                placeholder="Enter exact amount in ₹"
+                value={job.salary}
+                onChange={handleChange}
+                required={!job.isWages}
+              />
+            )}
+          </div>
+
+          {/* Expected Hours */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Expected Hours <span className="text-gray-400 text-xs">(Optional)</span>
+            </label>
+            <input
+              name="expectedHours"
+              type="text"
+              placeholder="eg.8"
+              className="w-full border border-gray-300 rounded-lg p-3"
+              value={job.expectedHours}
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="flex-1 flex flex-col justify-between space-y-4">
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1">
+              Description
+            </label>
+            <textarea
+              name="description"
+              rows={10}
+              placeholder="Enter the details of the job.."
+              className="w-full border border-gray-300 rounded-lg p-3"
+              value={job.description}
+              onChange={handleChange}
+              required
+            ></textarea>
+          </div>
+
+          {/* Buttons */}
+          <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 mt-4">
+            <button
+              type="button"
+              className="bg-gray-500 text-white px-5 py-2 rounded-lg hover:bg-gray-600"
+              onClick={() => {
+                setJob({
+                  title: "",
+                  description: "",
+                  location: "",
+                  salary: "",
+                  expectedHours: "",
+                  jobType: "Full-Time",
+                  jobCategories: "",
+                  isWages: false,
+                  showFormModal: false,
+                  customCategory: false,
+                });
+                setIsCustomSalary(false);
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700"
+            >
+              Post Job
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
+
 
           {/* User's Posted Jobs */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
