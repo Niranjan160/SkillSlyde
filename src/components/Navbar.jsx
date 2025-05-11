@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import logo from "../assets/images/logo.webp";
 import { FaUserCircle } from "react-icons/fa";
-
 
 const Navbar = () => {
   const navigate = useNavigate();
