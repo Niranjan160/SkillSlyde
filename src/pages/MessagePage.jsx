@@ -60,13 +60,39 @@ const MessagesPage = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-      try {
-        const res = await axios.get(`${API_BASE_URL}/api/messages/${userId}`);
-        setUsers(res.data);
-      } catch (err) {
-        console.error("Failed to fetch chat users", err);
-      }
-    };
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/messages/${userId}`);
+    const usersWithImages = await Promise.all(
+      res.data.map(async (user) => {
+        try {
+          const imgRes = await axios.get(`${API_BASE_URL}/api/users/${user.userId}/profile-image`, {
+            responseType: "arraybuffer",
+          });
+
+          const base64Image = btoa(
+            new Uint8Array(imgRes.data).reduce(
+              (data, byte) => data + String.fromCharCode(byte),
+              ""
+            )
+          );
+
+          return {
+            ...user,
+            profileImage: `data:image/jpeg;base64,${base64Image}`,
+          };
+        } catch (err) {
+          console.warn(`No profile image found for user ${user.userId}`);
+          return { ...user, profileImage: null };
+        }
+      })
+    );
+
+    setUsers(usersWithImages);
+  } catch (err) {
+    console.error("Failed to fetch chat users", err);
+  }
+};
+
 
     fetchUsers();
   }, [userId]);
@@ -105,14 +131,11 @@ const MessagesPage = () => {
               className="flex items-center p-4 border-b hover:bg-indigo-50 cursor-pointer"
             >
               <img
-              src={`${API_BASE_URL}/api/users/${user.userId}/profile-image`}
-                alt={`${user.name}'s profile`}
-                className="w-10 h-10 rounded-full object-cover border mr-4"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = "/default-profile.jpg"; // Place this image in /public folder
-                }}
-              />
+  src={user.profileImage || DefaultProfile}
+  alt={`${user.name}'s profile`}
+  className="w-10 h-10 rounded-full object-cover border mr-4"
+/>
+
               <span className="text-gray-800 font-medium">{user.name}</span>
             </div>
           ))
