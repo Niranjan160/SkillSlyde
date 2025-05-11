@@ -33,73 +33,43 @@ const PostJob = ({ addJob, userId }) => {
   const [isEditing, setIsEditing] = useState(false); //  Track if editing or viewing
 
   // Fetch user's posted jobs on mount
-useEffect(() => {
+  useEffect(() => {
   if (userId) {
-    const fetchJobs = () => {
-      fetch(`${API_BASE_URL}/api/jobs/user/${userId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          data.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt));
-          setUserJobs((prevJobs) => {
-            const newJobs = data.filter(
-              (job) => !prevJobs.some((prev) => prev.jobId === job.jobId)
-            );
-            return [...newJobs, ...prevJobs];
-          });
-        })
-        .catch((error) => console.error("Error fetching jobs:", error));
-    };
+    // Fetch user's jobs once
+    fetch(`${API_BASE_URL}/api/jobs/user/${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        data.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt));
+        setUserJobs(data);
+      })
+      .catch(console.error);
 
-    fetchJobs();
-
+    // Connect WebSocket to receive new job postings
     const socket = new SockJS(`${API_BASE_URL}/ws`);
     const client = new Client({
       webSocketFactory: () => socket,
       reconnectDelay: 5000,
-      heartbeatIncoming: 4000,
-      heartbeatOutgoing: 4000,
       onConnect: () => {
-        console.log("WebSocket connected");
         client.subscribe("/topic/jobs", (message) => {
-          try {
-            const newJob = JSON.parse(message.body);
-            console.log("WebSocket new job:", newJob);
+  const newJob = JSON.parse(message.body);
+  console.log("WebSocket new job:", newJob);
 
-            if (newJob?.userId && newJob.userId === parseInt(userId)) {
-              setUserJobs((prevJobs) => {
-                if (prevJobs.some((job) => job.jobId === newJob.jobId)) {
-                  return prevJobs;
-                }
-                const updatedJobs = [newJob, ...prevJobs];
-                console.log("Updated userJobs via WebSocket:", updatedJobs);
-                return updatedJobs;
-              });
-            }
-          } catch (error) {
-            console.error("Error processing WebSocket message:", error);
-          }
-        });
-      },
-      onStompError: (frame) => {
-        console.error("WebSocket error:", frame);
-      },
-      onWebSocketClose: () => {
-        console.log("WebSocket closed, starting polling...");
-        const pollingInterval = setInterval(fetchJobs, 10000);
-        return () => clearInterval(pollingInterval);
+  // Remove this check if it fails
+  if (!newJob || !newJob.userId) return; // basic safeguard
+
+  if (newJob.userId === parseInt(userId)) {
+    setUserJobs((prevJobs) => [newJob, ...prevJobs]);
+  }
+});
       },
     });
-
     client.activate();
 
-    return () => {
-      console.log("Deactivating WebSocket");
-      client.deactivate();
-    };
+    return () => client.deactivate();
   }
 }, [userId]);
 
-  
+
   const handleCategoryClick = (category) => {
     const isCustom = category === "Custom Category";
     setJob({
@@ -154,7 +124,7 @@ useEffect(() => {
     setJob({ ...job, salary: e.target.value });
   };
 
- const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
   e.preventDefault();
 
   const payload = {
@@ -169,7 +139,7 @@ useEffect(() => {
   };
 
   try {
-    const res = await fetch(`${API_BASE_URL}/api/jobs/post`, {
+const res = await fetch(`${API_BASE_URL}/api/jobs/post`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -179,17 +149,12 @@ useEffect(() => {
 
     const newJob = await res.json();
 
-    setUserJobs((prevJobs) => {
-      if (prevJobs.some((job) => job.jobId === newJob.jobId)) {
-        return prevJobs;
-      }
-      const updatedJobs = [newJob, ...prevJobs];
-      console.log("Updated userJobs via handleSubmit:", updatedJobs);
-      return updatedJobs;
-    });
+    // ✅ Instantly add the new job to the top of the list
+    setUserJobs((prevJobs) => [newJob, ...prevJobs]);
 
     toast.success("Job posted successfully");
 
+    // ✅ Reset form and close modal
     setJob({
       title: "",
       description: "",
@@ -210,14 +175,8 @@ useEffect(() => {
     console.error(err);
   }
 };
-  setUserJobs((prevJobs) => {
-  if (prevJobs.some((job) => job.jobId === newJob.jobId)) {
-    return prevJobs;
-  }
-  const updatedJobs = [newJob, ...prevJobs];
-  console.log("Updated userJobs:", updatedJobs);
-  return updatedJobs;
-});
+
+  
   
   return (
     <div className="min-h-screen bg-gray-100 py-10">
