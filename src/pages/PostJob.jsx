@@ -4,6 +4,9 @@ import { toast } from "react-toastify";
 import categories from "../data/categories";
 import Custom from "../assets/images/custom.webp";
 import { API_BASE_URL } from "../CONSTANTS";
+import SockJS from "sockjs-client";
+import { Client } from "@stomp/stompjs";
+
 
 const PostJob = ({ addJob, userId }) => {
   const navigate = useNavigate();
@@ -31,19 +34,37 @@ const PostJob = ({ addJob, userId }) => {
 
   // Fetch user's posted jobs on mount
   useEffect(() => {
-    if (userId) {
-      fetch(`${API_BASE_URL}/api/jobs/user/${userId}`)
-        .then((res) => {
-          if (!res.ok) throw new Error("Failed to fetch jobs");
-          return res.json();
-        })
-        .then((data) => {
-          data.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt)); // ✅ newest first
-          setUserJobs(data);
-        })
-                .catch((err) => console.error(err));
-    }
-  }, [userId]);
+  if (userId) {
+    // Fetch user's jobs once
+    fetch(`${API_BASE_URL}/api/jobs/user/${userId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        data.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt));
+        setUserJobs(data);
+      })
+      .catch(console.error);
+
+    // Connect WebSocket to receive new job postings
+    const socket = new SockJS(`${API_BASE_URL}/ws`);
+    const client = new Client({
+      webSocketFactory: () => socket,
+      reconnectDelay: 5000,
+      onConnect: () => {
+        client.subscribe("/topic/jobs", (message) => {
+          const newJob = JSON.parse(message.body);
+          if (newJob.userId === parseInt(userId)) {
+            setUserJobs((prevJobs) => [newJob, ...prevJobs]);
+          }
+        });
+      },
+    });
+
+    client.activate();
+
+    return () => client.deactivate();
+  }
+}, [userId]);
+
 
   const handleCategoryClick = (category) => {
     const isCustom = category === "Custom Category";
@@ -99,58 +120,51 @@ const PostJob = ({ addJob, userId }) => {
     setJob({ ...job, salary: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-  e.preventDefault();
-
-  const payload = {
-    userId,
-    title: job.title,
-    description: job.description,
-    location: job.location,
-    salary: job.salary,
-    jobCategories: job.jobCategories,
-    jobType: job.jobType,
-    status: "OPEN",
+ const handleSubmit = async (e) => {
+    e.preventDefault();
+    // let salaryValue = job.salary;
+  
+    // Handle salary conversion
+    // if (!isCustomSalary && salaryValue.includes("-")) {
+    //   const [min, max] = salaryValue.split("-").map(Number);
+    //   salaryValue = (min + max) / 2; // Calculate average for storage
+    // } else if (!isCustomSalary && salaryValue.includes("+")) {
+    //   salaryValue = Number(salaryValue.replace("+", ""));
+    // }
+  
+    // Construct job post payload
+    const payload = {
+      userId,
+      title: job.title,
+      description: job.description,
+      location: job.location,
+      salary: job.salary,
+      jobCategories: job.jobCategories,
+      jobType: job.jobType,
+      status: "OPEN", // Default status as open
+    };
+  
+    try {
+      // Post the job to the backend
+      await addJob(payload);
+      toast.success("Job posted successfully");
+  
+      // Fetch updated jobs for the user
+      const res = await fetch(`${API_BASE_URL}/api/jobs/user/${userId}`);
+      if (res.ok) {
+        let updatedJobs = await res.json();
+        updatedJobs.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt)); // ✅ Sort by postedAt descending
+        setUserJobs(updatedJobs);
+      }
+      
+  
+      setJob({ ...job, showFormModal: false }); // Reset job state and close modal
+    } catch (err) {
+      toast.error("Failed to post job");
+      console.error(err);
+    }
   };
-
-  try {
-    const res = await fetch(`${API_BASE_URL}/api/jobs`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) throw new Error("Failed to post job");
-
-    const newJob = await res.json();
-
-    // ✅ Instantly add the new job to the top of the list
-    setUserJobs((prevJobs) => [newJob, ...prevJobs]);
-
-    toast.success("Job posted successfully");
-
-    // ✅ Reset form and close modal
-    setJob({
-      title: "",
-      description: "",
-      location: "",
-      salary: "",
-      salaryRange: "",
-      isCustomSalary: false,
-      expectedHours: "",
-      jobType: "Full-Time",
-      jobCategories: "",
-      isWages: false,
-      showFormModal: false,
-      customCategory: false,
-    });
-    setIsCustomSalary(false);
-  } catch (err) {
-    toast.error("Failed to post job");
-    console.error(err);
-  }
-};
-
+  
   
   return (
     <div className="min-h-screen bg-gray-100 py-10">
