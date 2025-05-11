@@ -63,8 +63,6 @@ const PostJob = ({ addJob, userId }) => {
 });
       },
     });
-console.log("WebSocket job received:", newJob);
-
     client.activate();
 
     return () => client.deactivate();
