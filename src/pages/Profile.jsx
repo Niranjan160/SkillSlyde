@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import imageCompression from "browser-image-compression";
 import { API_BASE_URL } from "../CONSTANTS";
+import DefaultProfile from "../assets/images/default-profile.jpg";
 
 const Profile = ({ userId }) => {
   const currentuserId = localStorage.getItem("userId");
@@ -78,19 +79,6 @@ const Profile = ({ userId }) => {
         // console.log("Ratings: ",rating);
 
         userData.rating = rating.data;
-        // Fetch profile image after user data
-//       try {
-//   const imgRes = await axios.get(`/api/users/${userId}/profile-image`, {
-//     responseType: "blob", // better than arraybuffer
-//   });
-
-//   const blobUrl = URL.createObjectURL(imgRes.data);
-//   userData.profileImage = blobUrl; // use this in <img src={...}>
-//   console.log(blobUrl);
-// } catch (imgErr) {
-//   console.warn("No profile image found or error loading it");
-// }
-
 
         setUser(userData);
       } catch (err) {
@@ -149,7 +137,7 @@ const Profile = ({ userId }) => {
         >
          
             <img
-              src={`${API_BASE_URL}/api/users/profile-image/${userId}`}
+              src={`${API_BASE_URL}/api/users/profile-image/${userId}` || DefaultProfile}
               alt="Profile"
               className="w-32 h-32 object-cover rounded-full border-4 border-indigo-500 shadow-md"
             />
