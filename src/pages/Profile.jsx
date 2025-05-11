@@ -4,7 +4,7 @@ import imageCompression from "browser-image-compression";
 import { API_BASE_URL } from "../CONSTANTS";
 import DefaultProfile from "../assets/images/default-profile.jpg";
 
-const Profile = ({ userId }) => {
+const Profile = ({ userId, readOnly = false }) => {
   const currentuserId = localStorage.getItem("userId");
   if (!userId) userId = currentuserId;
 
@@ -41,9 +41,6 @@ const Profile = ({ userId }) => {
     }
   };
 
- 
-  useEffect(() => {
-
  const fetchProfileImage = async () => {
     try {
       const res = await axios.get(
@@ -66,6 +63,9 @@ const Profile = ({ userId }) => {
       console.error("Error fetching profile image:", err);
     }
   };
+
+ 
+  useEffect(() => {
 
 
     
@@ -132,9 +132,12 @@ const Profile = ({ userId }) => {
       {/* Profile Card */}
       <div className="flex flex-col md:flex-row bg-white shadow-md rounded-lg overflow-hidden">
         <div
-          className="relative cursor-pointer md:w-1/3 p-6 bg-indigo-100 flex flex-col items-center justify-center"
-          onClick={() => fileInputRef.current.click()}
-        >
+  className={`relative ${readOnly ? 'cursor-default' : 'cursor-pointer'} md:w-1/3 p-6 bg-indigo-100 flex flex-col items-center justify-center`}
+  onClick={() => {
+    if (!readOnly) fileInputRef.current.click();
+  }}
+>
+
          
             <img
               src={`${API_BASE_URL}/api/users/profile-image/${userId}` || DefaultProfile}
@@ -144,14 +147,16 @@ const Profile = ({ userId }) => {
         
            
          
-          <input
-            type="file"
-            accept="image/*"
-            // capture="environment" // or "user" for front camera
-            className="hidden"
-            ref={fileInputRef}
-            onChange={handleImageUpload}
-          />
+          {!readOnly && (
+  <input
+    type="file"
+    accept="image/*"
+    className="hidden"
+    ref={fileInputRef}
+    onChange={handleImageUpload}
+  />
+)}
+
 
           <h2 className="text-xl font-semibold mt-4">{user.name}</h2>
           <p className="text-sm text-gray-600">{user.profession}</p>
