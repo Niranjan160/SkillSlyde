@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import { API_BASE_URL } from "../CONSTANTS";
+import DefaultProfile from "../assets/images/default-profile.jpg";
 
 const MessagesPage = () => {
   const [users, setUsers] = useState([]);
