@@ -32,9 +32,11 @@ const Navbar = () => {
             <NavLink to="/jobs" className={linkClass}>
               Jobs
             </NavLink>
-            <NavLink to="/add-job" className={linkClass}>
-              Post Job
-            </NavLink>
+            {userId && (
+  <NavLink to="/add-job" className={linkClass}>
+    Post Job
+  </NavLink>
+)}
 
             {/* User Profile or Login */}
             {userId ? (
