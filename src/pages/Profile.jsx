@@ -30,7 +30,7 @@ const Profile = ({ userId }) => {
       formData.append("image", compressedFile);
 
       await axios.post(
-        ${API_BASE_URL}/api/users/${userId}/upload-profile-image,
+        `${API_BASE_URL}/api/users/${userId}/upload-profile-image`,
         formData
       );
       alert("Profile image uploaded successfully!");
@@ -46,7 +46,7 @@ const Profile = ({ userId }) => {
  const fetchProfileImage = async () => {
     try {
       const res = await axios.get(
-        ${API_BASE_URL}/api/users/${userId}/profile-image,
+        `${API_BASE_URL}/api/users/${userId}/profile-image`,
         {
           responseType: "arraybuffer",
         }
@@ -59,7 +59,7 @@ const Profile = ({ userId }) => {
         )
       );
 
-      const imageUrl = data:image/webp;base64,${base64Image};
+      const imageUrl = `data:image/webp;base64,${base64Image}`;
       setUser((prevUser) => ({ ...prevUser, profileImage: imageUrl }));
     } catch (err) {
       console.error("Error fetching profile image:", err);
@@ -70,9 +70,9 @@ const Profile = ({ userId }) => {
     
     const fetchUser = async () => {
       try {
-        const res = await axios.get(${API_BASE_URL}/api/users/${userId});
+        const res = await axios.get(`${API_BASE_URL}/api/users/${userId}`);
         const rating = await axios.get(
-          ${API_BASE_URL}/api/applications/getrating/${userId}
+          `${API_BASE_URL}/api/applications/getrating/${userId}`
         );
         const userData = res.data;
         // console.log("Ratings: ",rating);
@@ -80,7 +80,7 @@ const Profile = ({ userId }) => {
         userData.rating = rating.data;
         // Fetch profile image after user data
 //       try {
-//   const imgRes = await axios.get(/api/users/${userId}/profile-image, {
+//   const imgRes = await axios.get(`/api/users/${userId}/profile-image`, {
 //     responseType: "blob", // better than arraybuffer
 //   });
 
@@ -100,11 +100,11 @@ const Profile = ({ userId }) => {
 
     const fetchJobs = async () => {
       try {
-        const res = await axios.get(${API_BASE_URL}/api/users/${userId}/jobs);
+        const res = await axios.get(`${API_BASE_URL}/api/users/${userId}/jobs`);
         setJobs(res.data);
 
         const data = await axios.get(
-          ${API_BASE_URL}/api/applications/getjobs/${userId}
+          `${API_BASE_URL}/api/applications/getjobs/${userId}`
         );
         console.log(data);
 
@@ -149,7 +149,7 @@ const Profile = ({ userId }) => {
         >
          
             <img
-              src={${API_BASE_URL}/api/users/profile-image/${userId}}
+              src={`${API_BASE_URL}/api/users/profile-image/${userId}`}
               alt="Profile"
               className="w-32 h-32 object-cover rounded-full border-4 border-indigo-500 shadow-md"
             />
