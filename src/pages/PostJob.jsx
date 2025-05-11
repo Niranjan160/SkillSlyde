@@ -100,49 +100,57 @@ const PostJob = ({ addJob, userId }) => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    // let salaryValue = job.salary;
-  
-    // Handle salary conversion
-    // if (!isCustomSalary && salaryValue.includes("-")) {
-    //   const [min, max] = salaryValue.split("-").map(Number);
-    //   salaryValue = (min + max) / 2; // Calculate average for storage
-    // } else if (!isCustomSalary && salaryValue.includes("+")) {
-    //   salaryValue = Number(salaryValue.replace("+", ""));
-    // }
-  
-    // Construct job post payload
-    const payload = {
-      userId,
-      title: job.title,
-      description: job.description,
-      location: job.location,
-      salary: job.salary,
-      jobCategories: job.jobCategories,
-      jobType: job.jobType,
-      status: "OPEN", // Default status as open
-    };
-  
-    try {
-      // Post the job to the backend
-      await addJob(payload);
-      toast.success("Job posted successfully");
-  
-      // Fetch updated jobs for the user
-      const res = await fetch(`${API_BASE_URL}/api/jobs/user/${userId}`);
-      if (res.ok) {
-        let updatedJobs = await res.json();
-        updatedJobs.sort((a, b) => new Date(b.postedAt) - new Date(a.postedAt)); // ✅ Sort by postedAt descending
-        setUserJobs(updatedJobs);
-      }
-      
-  
-      setJob({ ...job, showFormModal: false }); // Reset job state and close modal
-    } catch (err) {
-      toast.error("Failed to post job");
-      console.error(err);
-    }
+  e.preventDefault();
+
+  const payload = {
+    userId,
+    title: job.title,
+    description: job.description,
+    location: job.location,
+    salary: job.salary,
+    jobCategories: job.jobCategories,
+    jobType: job.jobType,
+    status: "OPEN",
   };
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/jobs`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) throw new Error("Failed to post job");
+
+    const newJob = await res.json();
+
+    // ✅ Instantly add the new job to the top of the list
+    setUserJobs((prevJobs) => [newJob, ...prevJobs]);
+
+    toast.success("Job posted successfully");
+
+    // ✅ Reset form and close modal
+    setJob({
+      title: "",
+      description: "",
+      location: "",
+      salary: "",
+      salaryRange: "",
+      isCustomSalary: false,
+      expectedHours: "",
+      jobType: "Full-Time",
+      jobCategories: "",
+      isWages: false,
+      showFormModal: false,
+      customCategory: false,
+    });
+    setIsCustomSalary(false);
+  } catch (err) {
+    toast.error("Failed to post job");
+    console.error(err);
+  }
+};
+
   
   return (
     <div className="min-h-screen bg-gray-100 py-10">
