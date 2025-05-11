@@ -109,7 +109,8 @@ const NotificationPage = () => {
                 <img
                   src={`data:image/jpeg;base64,${notification.profileimage}`}
                   alt={notification.userName}
-                  className="w-12 h-12 rounded-full object-cover "
+                  className="w-12 h-12 rounded-full object-cover cursor-pointer"
+                  onClick={() => handleProfileClick(notification.userId)}
                 />
                 <div className="ml-4 text-sm">
                   <h3 className="font-semibold text-base">{notification.userName}</h3>
