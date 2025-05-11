@@ -32,9 +32,18 @@ const Navbar = () => {
             <NavLink to="/jobs" className={linkClass}>
               Jobs
             </NavLink>
-            <NavLink to="/add-job" className={linkClass}>
-              Post Job
-            </NavLink>
+            <NavLink
+  to="/add-job"
+  className={linkClass}
+  onClick={() => {
+    setTimeout(() => {
+      window.location.reload();
+    }, 0);
+  }}
+>
+  Post Job
+</NavLink>
+
 
             {/* User Profile or Login */}
             {userId ? (
