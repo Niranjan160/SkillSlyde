@@ -31,7 +31,9 @@ const PostJob = ({ addJob, userId }) => {
 
   // Fetch user's posted jobs on mount
   useEffect(() => {
-    if (userId) {
+
+    const fetchJobs = async()=>{
+        if (userId) {
       fetch(`${API_BASE_URL}/api/jobs/user/${userId}`)
         .then((res) => {
           if (!res.ok){
@@ -46,6 +48,8 @@ const PostJob = ({ addJob, userId }) => {
         })
                 .catch((err) => console.error(err));
     }
+    }
+    fetchJobs()
   }, [userId]);
 
   const handleCategoryClick = (category) => {
