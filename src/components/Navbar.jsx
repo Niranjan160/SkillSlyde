@@ -79,9 +79,12 @@ useEffect(() => {
           <NavLink to="/jobs" className={linkClass}>
             Jobs
           </NavLink>
-          <NavLink to="/add-job" className={linkClass}>
-            Post Job
-          </NavLink>
+          <N{userId && (
+  <NavLink to="/add-job" className={linkClass}>
+    Post Job
+  </NavLink>
+)}
+
 
           {/* User Profile or Login */}
           {userId ? (
