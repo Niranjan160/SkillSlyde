@@ -33,17 +33,15 @@ const PostJob = ({ addJob, userId }) => {
   useEffect(() => {
 
     const fetchJobs = async()=>{
-        alert(`fetched userId:${userId}`)
-        if (userId) {
-        alert(`fetched userId1:${userId}`)
-          
+        if(!userId) userId = localStorage.getItem("userId");
+        if (userId) {    
       fetch(`${API_BASE_URL}/api/jobs/user/${userId}`)
         .then((res) => {
           if (!res.ok){
             alert("Error fetching jobs..")
             throw new Error("Failed to fetch jobs");
           }
-            alert("Job fetched suceess..")
+          
           return res.json();
         })
         .then((data) => {
