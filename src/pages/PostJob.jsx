@@ -431,7 +431,7 @@ const PostJob = ({ addJob, userId }) => {
 
           {/* User's Posted Jobs */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {userJobs.map((job) => (
+            {userJobs?.map((job) => (
               <div
                 key={job.jobId}
                 className="flex bg-white rounded-xl shadow-lg hover:shadow-2xl transition overflow-hidden cursor-pointer"
