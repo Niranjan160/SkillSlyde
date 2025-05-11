@@ -137,7 +137,7 @@ const Profile = ({ userId }) => {
         >
          
             <img
-              src={`${API_BASE_URL}/api/users/profile-image/${userId}` || DefaultProfile}
+              src={user.profileImage || DefaultProfile}
               alt="Profile"
               className="w-32 h-32 object-cover rounded-full border-4 border-indigo-500 shadow-md"
             />
