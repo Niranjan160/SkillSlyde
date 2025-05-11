@@ -51,13 +51,19 @@ const PostJob = ({ addJob, userId }) => {
       reconnectDelay: 5000,
       onConnect: () => {
         client.subscribe("/topic/jobs", (message) => {
-          const newJob = JSON.parse(message.body);
-          if (newJob.userId === parseInt(userId)) {
-            setUserJobs((prevJobs) => [newJob, ...prevJobs]);
-          }
-        });
+  const newJob = JSON.parse(message.body);
+  console.log("WebSocket new job:", newJob);
+
+  // Remove this check if it fails
+  if (!newJob || !newJob.userId) return; // basic safeguard
+
+  if (newJob.userId === parseInt(userId)) {
+    setUserJobs((prevJobs) => [newJob, ...prevJobs]);
+  }
+});
       },
     });
+console.log("WebSocket job received:", newJob);
 
     client.activate();
 
